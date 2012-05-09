@@ -15,9 +15,9 @@ routes(app);
 
 app.listen(port, host);
 
-//load sioLib
-var sioLib = require("./lib/socketioLib");
+var socks = require("./lib/sockets");
 
 
-//Pass app and also sessionStore from expressConfig so sio can get hold of session
-sioLib(app, expressConfig.sessionStore);
+//Pass app and also sessionStore from expressConfig so we can get hold
+//of sessions to authenticate
+socks(app, expressConfig.sessionStore);
