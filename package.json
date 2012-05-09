@@ -6,7 +6,6 @@
   , "dependencies": {
       "express": "2.5.0"
     , "ejs": ""
-    , "socket.io": ""
     , "sockjs": "~0.3"
   }
 }
