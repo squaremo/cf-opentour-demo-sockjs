@@ -17,19 +17,18 @@
 					<div id='mainDiv'>
 						<ul id='chatList' class='unstyled'></ul>
 					</div>
-					<div class='form-search'>
-					<input class="input-xlarge" style='width:438px;' id="chatField"/>
-					<input type="button"  class="btn btn-primary"  id="datasend" value="Send"/>
-					</div>
+					<form class="form-search" id="form-send">
+					  <input class="input-xlarge" style='width:438px;' id="chatField"/>
+					  <input type="submit" class="btn btn-primary" id="datasend" value="Send"/>
+					</form>
 				</div>
-						
+
             </td>
         </tr>
     </table>
 </div>
 </body>
 <script type="text/javascript" src="/javascripts/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-<script type='text/javascript' src="/javascripts/client.js"></script>
-</html> 
-
+<script type="text/javascript" src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+<script type="text/javascript" src="/javascripts/client.js"></script>
+</html>

@@ -1,30 +1,28 @@
-var socket = io.connect(document.location.href);
+var socket = new SockJS('/socks');
 
 // on connection to server, ask for user's name with an anonymous callback
-socket.on('connect', function() {
-	console.log("client connected");
-});
+socket.onopen = function() {
+    console.log("client connected");
+    var maybeCookie = /jsessionid=(.*)/.exec(document.cookie);
+    if (maybeCookie) {
+        socket.send(unescape(maybeCookie[1]));
+    }
+};
 
-socket.on('updatechat', function (data) {
-	$("#chatList").append(getList(data));
-});
+socket.onmessage = function (msg) {
+    $("#chatList").append(getList(msg.data));
+};
 
-// listener, whenever the server emits 'updateusers', this updates the username list
-socket.on('updateusers', function(data) {
-    $('#users').empty();
-    $.each(data, function(key, value) {
-        $('#users').append('<div>' + key + '</div>');
-    });
-});
-socket.on('disconnect', function () {
-	console.log("disconnected");
-});
+socket.onclose = function () {
+    console.log("disconnected");
+};
 
 function sendchat() {
     var message = $('#chatField').val();
     $('#chatField').val('');
     // tell server to execute 'sendchat' and send along one parameter
-    socket.emit('sendchat', message);
+    socket.send(message);
+    return false;
 }
 function getList(data) {
 	data = data.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -33,23 +31,7 @@ function getList(data) {
 
 // on load of page
 $(function() {
-	function sendChat() {
-        var message = $('#chatField').val();
-        $('#chatField').val('');
-		$('#chatField').focus();
-        // tell server to execute 'sendchat' and send along one parameter
-        socket.emit('sendchat', message);
-    }
     // when the client clicks SEND
-    $('#chatFieldsend').click(function() {
-        sendChat();
-    });
-
-    // when the client hits ENTER on their keyboard
-    $('#chatField').keypress(function(e) {
-        if (e.which == 13) {
-            sendChat();
-        }
-    });
-	$('#chatField').focus();
+    $('#form-send').submit(sendchat);
+    $('#chatField').focus();
 });
